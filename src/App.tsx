@@ -9,7 +9,6 @@ import useInitialiseNewChat from '@hooks/useInitialiseNewChat';
 import { ChatInterface } from '@type/chat';
 import { Theme } from '@type/theme';
 import ApiPopup from '@components/ApiPopup';
-import ConfigPanel from '@components/ConfigPanel';
 
 function App() {
   const initialiseNewChat = useInitialiseNewChat();
@@ -77,12 +76,10 @@ function App() {
   return (
     <div className='overflow-hidden w-full h-full relative'>
       <Menu />
-      <div className='flex flex-col md:flex-row h-full'>
-        <Chat />
-        <ConfigPanel />
-      </div>
+      <Chat />
       <ApiPopup />
     </div>
   );
 }
+
 export default App;
