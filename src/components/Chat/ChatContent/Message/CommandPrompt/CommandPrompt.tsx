@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useStore from '@store/store';
+
 import { useTranslation } from 'react-i18next';
 import { matchSorter } from 'match-sorter';
 import { Prompt } from '@type/prompt';
+
+import useHideOnOutsideClick from '@hooks/useHideOnOutsideClick';
 
 const CommandPrompt = ({
   _setContent,
@@ -11,9 +14,10 @@ const CommandPrompt = ({
 }) => {
   const { t } = useTranslation();
   const prompts = useStore((state) => state.prompts);
-  const [dropDown, setDropDown] = useState<boolean>(false);
   const [_prompts, _setPrompts] = useState<Prompt[]>(prompts);
   const [input, setInput] = useState<string>('');
+
+  const [dropDown, setDropDown, dropDownRef] = useHideOnOutsideClick();
 
   useEffect(() => {
     const filteredPrompts = matchSorter(useStore.getState().prompts, input, {
@@ -28,7 +32,7 @@ const CommandPrompt = ({
   }, [prompts]);
 
   return (
-    <div className='relative max-wd-sm'>
+    <div className='relative max-wd-sm' ref={dropDownRef}>
       <button
         className='btn btn-neutral btn-small'
         onClick={() => setDropDown(!dropDown)}

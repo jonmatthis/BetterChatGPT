@@ -20,6 +20,8 @@ import RefreshIcon from '@icon/RefreshIcon';
 
 import { folderColorOptions } from '@constants/color';
 
+import useHideOnOutsideClick from '@hooks/useHideOnOutsideClick';
+
 const ChatFolder = ({
   folderChats,
   folderId,
@@ -27,9 +29,9 @@ const ChatFolder = ({
   folderChats: ChatHistoryInterface[];
   folderId: string;
 }) => {
-  const folderName = useStore((state) => state.folders[folderId].name);
-  const isExpanded = useStore((state) => state.folders[folderId].expanded);
-  const color = useStore((state) => state.folders[folderId].color);
+  const folderName = useStore((state) => state.folders[folderId]?.name);
+  const isExpanded = useStore((state) => state.folders[folderId]?.expanded);
+  const color = useStore((state) => state.folders[folderId]?.color);
 
   const setChats = useStore((state) => state.setChats);
   const setFolders = useStore((state) => state.setFolders);
@@ -42,7 +44,8 @@ const ChatFolder = ({
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isDelete, setIsDelete] = useState<boolean>(false);
   const [isHover, setIsHover] = useState<boolean>(false);
-  const [showPalette, setShowPalette] = useState<boolean>(false);
+
+  const [showPalette, setShowPalette, paletteRef] = useHideOnOutsideClick();
 
   const editTitle = () => {
     const updatedFolders: FolderCollection = JSON.parse(
@@ -217,7 +220,10 @@ const ChatFolder = ({
             </>
           ) : (
             <>
-              <div className='relative md:hidden group-hover/folder:md:inline'>
+              <div
+                className='relative md:hidden group-hover/folder:md:inline'
+                ref={paletteRef}
+              >
                 <button
                   className='p-1 hover:text-white'
                   onClick={() => {
